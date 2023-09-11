@@ -1,8 +1,9 @@
-import React from 'react'
+import { Text } from "react-native"
+
 
 const TransactionsScreen = () => {
   return (
-    <div>TransactionsScreen</div>
+    <Text>TransactionsScreen</Text>
   )
 }
 

@@ -14,6 +14,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import SendMoneyScreen from '../screens/SendMoneyScreen';
 
 const Stacks = () => {
   const Stack = createNativeStackNavigator();
@@ -32,6 +33,7 @@ const Stacks = () => {
         component={TransactionsScreen}
         options={{}}
       />
+      <Stack.Screen name='SendMoneyScreen' component={SendMoneyScreen} />
       <Stack.Screen
         name='FriendsScreen'
         component={FriendsScreen}

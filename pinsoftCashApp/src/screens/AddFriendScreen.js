@@ -1,8 +1,7 @@
-import React from 'react'
-
+import { Text } from "react-native"
 const AddFriendScreen = () => {
   return (
-    <div>AddFriendScreen</div>
+    <Text>AddFriendScreen</Text>
   )
 }
 

@@ -1,8 +1,8 @@
-import React from 'react'
+import { Text } from "react-native"
 
 const HomePage = () => {
   return (
-    <div>HomePage</div>
+    <Text>HomePage</Text>
   )
 }
 

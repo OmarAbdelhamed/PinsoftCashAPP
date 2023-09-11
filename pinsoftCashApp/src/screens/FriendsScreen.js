@@ -1,8 +1,8 @@
-import React from 'react'
+import { Text } from "react-native"
 
 const FriendsScreen = () => {
   return (
-    <div>FriendsScreen</div>
+    <Text>FriendsScreen</Text>
   )
 }
 
