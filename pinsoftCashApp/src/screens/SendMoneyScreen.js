@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ErrorScreen from "./ErrorScreen"; 
 
 
+
 import QRCode from "react-native-qrcode-svg";
 
 const SendMoneyScreen = ({ navigation }) => {
@@ -22,6 +23,7 @@ const SendMoneyScreen = ({ navigation }) => {
     setQRData(sentBalance);
   };
 
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Para Gönderme Ekranı</Text>
@@ -33,6 +35,7 @@ const SendMoneyScreen = ({ navigation }) => {
         onChangeText={(enteredValue) => setSentBalance(enteredValue)}
       />
       <Button title="Gönder" onPress={handleSubmit} />
+
       <Button title="QR Oluştur" onPress={handleQRCreate} />
 
       {/* QR kodunu sadece bir şartla görüntüleyin */}
