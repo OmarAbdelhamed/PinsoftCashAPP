@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from "react-native";
 
 const ErrorScreen = ({ navigation }) => {
   const handleRetry = () => {
-    // Tekrar Dene düğmesine basıldığında yapılacak işlemleri burada gerçekleştirin
+    // Tekrar Dene düğmesine basıldığında yapılacak işlemleri burada gerçekleşin
     
   };
 
@@ -14,7 +14,7 @@ const ErrorScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>İşlem Başarısız!</Text>
+      <Text style={styles.heading}>İşlem Başarısızzz!</Text>
       <Button title="Tekrar Dene" onPress={handleRetry} />
       <Button title="Ana Menüye Dön" onPress={handleGoBack} />
     </View>
