@@ -14,11 +14,11 @@ const SendMoneyScreen = ({ navigation }) => {
   const handleSubmit = () => {
     
     setIsTransactionSuccessful(false);
-    navigation.navigate("ErrorScreen"); // ErrorScreen'e yönlendirin
+    navigation.navigate("ErrorScreen"); 
   };
 
   const handleQRCreate = () => {
-    // QR kodunun içeriğini sentBalance değeri olarak ayarlayın
+    
     setQRData(sentBalance);
   };
 
