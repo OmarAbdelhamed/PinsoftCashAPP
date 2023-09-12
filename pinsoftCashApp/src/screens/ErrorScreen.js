@@ -3,12 +3,12 @@ import { View, Text, Button, StyleSheet } from "react-native";
 
 const ErrorScreen = ({ navigation }) => {
   const handleRetry = () => {
-    // Tekrar Dene düğmesine basıldığında yapılacak işlemleri burada gerçekleşin
+    // Tekrar Dene düğmesine basıldığında yapılacak işlemleri burada gerçekleşsin
     
   };
 
   const handleGoBack = () => {
-    // AnaMenü Dön düğmesine basıldığında yapılacak işlemleri burada gerçekleştirin
+    
     navigation.navigate("HomePage"); 
   };
 
