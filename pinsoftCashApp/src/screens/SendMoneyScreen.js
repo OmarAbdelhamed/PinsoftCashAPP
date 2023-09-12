@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import ErrorScreen from "./ErrorScreen"; 
 
+
+
+import QRCode from "react-native-qrcode-svg";
 
 const SendMoneyScreen = ({ navigation }) => {
   const [sentBalance, setSentBalance] = useState("");
   const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(true); // İşlem başarısız olduğunda false olarak ayarlayın
+  const [qrData, setQRData] = useState(""); // QR kodunun içeriğini tutmak için bir state ekleyin
 
   const handleSubmit = () => {
-   
+    
     setIsTransactionSuccessful(false);
-    navigation.navigate("HataEkranı"); 
+    navigation.navigate("ErrorScreen"); 
   };
 
   const handleQRCreate = () => {
-
-    console.log("QR Kodu Oluşturuldu");
+    
+    setQRData(sentBalance);
   };
+
 
   return (
     <View style={styles.container}>
@@ -29,9 +35,18 @@ const SendMoneyScreen = ({ navigation }) => {
         onChangeText={(enteredValue) => setSentBalance(enteredValue)}
       />
       <Button title="Gönder" onPress={handleSubmit} />
-      <Button title="QR Oluştur" onPress={handleQRCreate} /> {/* QR Oluştur düğmesi */}
-      
-      {isTransactionSuccessful === false}
+
+      <Button title="QR Oluştur" onPress={handleQRCreate} />
+
+      {/* QR kodunu sadece bir şartla görüntüleyin */}
+      {qrData ? (
+        <QRCode
+          value={qrData} // QR kodunun içeriği
+          size={200} 
+        />
+      ) : null}
+
+      {isTransactionSuccessful === false && <ErrorScreen navigation={navigation} />}
     </View>
   );
 };
