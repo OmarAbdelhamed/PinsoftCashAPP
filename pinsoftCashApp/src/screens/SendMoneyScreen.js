@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import ErrorScreen from "./ErrorScreen"; 
+
 
 const SendMoneyScreen = ({ navigation }) => {
   const [sentBalance, setSentBalance] = useState("");
@@ -31,7 +31,7 @@ const SendMoneyScreen = ({ navigation }) => {
       <Button title="Gönder" onPress={handleSubmit} />
       <Button title="QR Oluştur" onPress={handleQRCreate} /> {/* QR Oluştur düğmesi */}
       
-      {isTransactionSuccessful === false && <ErrorScreen navigation={navigation} />}
+      {isTransactionSuccessful === false}
     </View>
   );
 };
