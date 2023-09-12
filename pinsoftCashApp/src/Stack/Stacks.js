@@ -16,13 +16,14 @@ import {
 import SendMoneyScreen from '../screens/SendMoneyScreen';
 import LoginScreen from '../screens/LoginScreen';
 
+
 const Stacks = () => {
   const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name='loginScreen'
+        name='LoginScreen'
         component={LoginScreen}
         options={{ headerShown: false }}
       />
@@ -39,6 +40,11 @@ const Stacks = () => {
         component={FriendsScreen}
         options={{}}
       />
+      {/* <Stack.Screen
+        name='QRScannerScreen'
+        component={QRScannerScreen}
+        options={{}}
+      /> */}
       <Stack.Screen name='Stacks' component={Stacks} options={{}} />
     </Stack.Navigator>
   );
