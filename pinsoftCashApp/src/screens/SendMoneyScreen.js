@@ -1,19 +1,59 @@
-import { useState } from "react";
-import { View, Text, TextInput , Button } from "react-native";
-import { useDispatch } from "react-redux";
-import { UseSelector } from "react-redux/es/hooks/useSelector";
+import React, { useState } from "react";
+import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import ErrorScreen from "./ErrorScreen"; 
 
-const SendMoneyScreen = () => {
-  const [sentBalance, setSentBalance] = useState(null);
-  const handleSubmit = (e)=>{
+const SendMoneyScreen = ({ navigation }) => {
+  const [sentBalance, setSentBalance] = useState("");
+  const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(true); // İşlem başarısız olduğunda false olarak ayarlayın
 
-  }
-  console.log(sentBalance);
+  const handleSubmit = () => {
+   
+    setIsTransactionSuccessful(false);
+    navigation.navigate("HataEkranı"); 
+  };
+
+  const handleQRCreate = () => {
+
+    console.log("QR Kodu Oluşturuldu");
+  };
+
   return (
-    <View>
-      <TextInput name='sent balance' value={sentBalance} onChangeText={(enteredValue)=>setSentBalance(enteredValue)} />
-      <Button title="QR Oluştur" onPress={handleSubmit} />
+    <View style={styles.container}>
+      <Text style={styles.heading}>Para Gönderme Ekranı</Text>
+      <TextInput
+        style={styles.input}
+        name="sent balance"
+        placeholder="Gönderilecek Tutar"
+        value={sentBalance}
+        onChangeText={(enteredValue) => setSentBalance(enteredValue)}
+      />
+      <Button title="Gönder" onPress={handleSubmit} />
+      <Button title="QR Oluştur" onPress={handleQRCreate} /> {/* QR Oluştur düğmesi */}
+      
+      {isTransactionSuccessful === false && <ErrorScreen navigation={navigation} />}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  heading: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+  input: {
+    width: 200,
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 10,
+    padding: 10,
+  },
+});
+
 export default SendMoneyScreen;
