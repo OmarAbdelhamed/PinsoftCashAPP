@@ -26,20 +26,35 @@ const Stacks = () => {
         component={loginScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name='SignUpScreen' component={SignUpScreen} options={{}} />
-      <Stack.Screen name='HomePage' component={HomePage} options={{}} />
+      <Stack.Screen
+        name='SignUpScreen'
+        component={SignUpScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name='HomePage'
+        component={HomePage}
+        options={{}}
+      />
       <Stack.Screen
         name='TransactionsScreen'
         component={TransactionsScreen}
         options={{}}
       />
-      <Stack.Screen name='SendMoneyScreen' component={SendMoneyScreen} />
+      <Stack.Screen
+        name='SendMoneyScreen'
+        component={SendMoneyScreen}
+       />
       <Stack.Screen
         name='FriendsScreen'
         component={FriendsScreen}
         options={{}}
       />
-      <Stack.Screen name='Stacks' component={Stacks} options={{}} />
+      <Stack.Screen
+        name='Stacks'
+        component={Stacks}
+        options={{}}
+       />
     </Stack.Navigator>
   );
 };
