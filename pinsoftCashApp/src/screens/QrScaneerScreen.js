@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { RNCamera } from "react-native-camera";
-import { useNavigation } from "@react-navigation/native"; // React Navigation eklediğinizi varsayalım
-
+import { useNavigation } from "@react-navigation/native";
 const QRScannerScreen = () => {
   const navigation = useNavigation();
   const [scanned, setScanned] = useState(false);
@@ -19,8 +18,7 @@ const QRScannerScreen = () => {
 
   useEffect(() => {
     if (scanned) {
-      // QR kod okunduğunda yapılacak işlemleri burada gerçekleştirebilirsiniz
-      // Örneğin, QR kod içeriğini işleyebilir veya belirli bir ekrana yönlendirebilirsiniz
+      // QR kod okunduğunda yapılacak işlemleri burada gerçekleştireceğiz
     }
   }, [scanned]);
 

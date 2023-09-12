@@ -17,11 +17,9 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '../app/cashSlice';
 
 const LoginScreen = () => {
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -70,24 +68,19 @@ const LoginScreen = () => {
   };
   const handleSignUp = () => {
     navigation.navigate('SignUpScreen');
-
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Giriş Yap</Text>
       <TextInput
-
         placeholder='Kullanıcı Adı'
-
         style={styles.input}
         onChangeText={(text) => setUsername(text)}
         value={username}
       />
       <TextInput
-
         placeholder='Şifre'
-
         style={styles.input}
         onChangeText={(text) => setPassword(text)}
         value={password}
@@ -100,8 +93,9 @@ const LoginScreen = () => {
         <Text style={styles.buttonContainer}>Sign Up</Text>
       </TouchableOpacity>
 
-      {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
-
+      {errorMessage ? (
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      ) : null}
     </View>
   );
 };
@@ -131,7 +125,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button: {
-
     backgroundColor: 'orange',
     borderRadius: 5,
     paddingVertical: 10,
@@ -140,4 +133,3 @@ const styles = StyleSheet.create({
   },
 });
 export default LoginScreen;
-

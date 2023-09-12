@@ -11,7 +11,7 @@ const TransactionSuccessScreen = () => {
   
   const fetchTransactionData = async () => {
     try {
-      // Verileri API'den çekmek için uygun bir işlem yapılmalı
+      // Verileri API'den çekmek için işlem
       
       const data = {
         receivedAmount: 500.0,
@@ -52,7 +52,7 @@ const TransactionSuccessScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  // Stil tanımlamaları burada
+  // Stil tanımlamaları 
 });
 
 export default TransactionSuccessScreen;
