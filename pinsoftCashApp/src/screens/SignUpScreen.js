@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+
 
 const SignUpScreen = () => {
   const [firstName, setFirstName] = useState('');
@@ -7,40 +10,65 @@ const SignUpScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigation = useNavigation()
+
   const handleSignUp = () => {
-    //...
-    alert('Üyelik başarıyla oluşturuldu!');
+
+    axios
+      .post(
+        'https://mobil-bank-production.up.railway.app/swagger-ui/auth/register',
+        {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+        }
+      )
+
+      .then(
+        (response) => {
+          console.log(response);
+          if (response.status === 200) {
+            alert('Üyelik başarıyla oluşturuldu!');
+            navigation.navigate('loginScreen');
+          }
+        },
+        (error) => {
+          alert('hata oldu!');
+          console.log(error);
+        }
+      );
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Üyelik Oluştur</Text>
       <TextInput
-        placeholder="Ad"
+        placeholder='Ad'
         style={styles.input}
         onChangeText={(text) => setFirstName(text)}
         value={firstName}
       />
       <TextInput
-        placeholder="Soyad"
+        placeholder='Soyad'
         style={styles.input}
         onChangeText={(text) => setLastName(text)}
         value={lastName}
       />
       <TextInput
-        placeholder="E-posta"
+        placeholder='E-posta'
         style={styles.input}
         onChangeText={(text) => setEmail(text)}
         value={email}
       />
       <TextInput
-        placeholder="Şifre"
+        placeholder='Şifre'
         style={styles.input}
         onChangeText={(text) => setPassword(text)}
         value={password}
         secureTextEntry={true}
       />
-      <Button title="Üyelik Oluştur" onPress={handleSignUp} />
+      <Button title='Üyelik Oluştur' onPress={handleSignUp} />
     </View>
   );
 };
@@ -64,7 +92,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-  
 });
 
 export default SignUpScreen;
