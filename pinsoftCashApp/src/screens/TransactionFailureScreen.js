@@ -1,14 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const TransactionFailureScreen = ({ navigation }) => {
+const TransactionFailureScreen = () => {
+  const navigation = useNavigation();
+
   const handleRetry = () => {
-
-    navigation.navigate('QrScannerScreen');
+    navigation.navigate('QRScannerScreen');
   };
 
   const handleReturnToMainMenu = () => {
-    
     navigation.navigate('HomePage');
   };
 
