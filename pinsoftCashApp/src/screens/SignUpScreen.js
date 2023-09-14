@@ -3,27 +3,22 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
-
 const SignUpScreen = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const handleSignUp = () => {
-
     axios
-      .post(
-        'https://mobil-bank-production.up.railway.app/swagger-ui/auth/register',
-        {
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          password: password,
-        }
-      )
+      .post('https://mobil-bank-production.up.railway.app/auth/register', {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+      })
 
       .then(
         (response) => {
