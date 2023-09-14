@@ -15,7 +15,7 @@ const ErrorScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>İşlem Başarısız!git pull --rebase origin main</Text>
+      <Text style={styles.heading}>İşlem Başarısız!</Text>
       <Button title="Tekrar Dene" onPress={handleRetry} />
       <Button title="Ana Menüye Dön" onPress={handleGoBack} />
     </View>
