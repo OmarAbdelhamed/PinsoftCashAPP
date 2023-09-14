@@ -1,20 +1,21 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const ErrorScreen = ({ navigation }) => {
+const ErrorScreen = () => {
+  const navigation = useNavigation();
+
   const handleRetry = () => {
-    // Tekrar Dene düğmesine basıldığında yapılacak işlemleri burada gerçekleşin
-    
+    navigation.navigate("SendMoneyScreen"); 
   };
 
   const handleGoBack = () => {
-    // AnaMenü Dön düğmesine basıldığında yapılacak işlemleri burada gerçekleştirin
     navigation.navigate("HomePage"); 
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>İşlem Başarısızzz!</Text>
+      <Text style={styles.heading}>İşlem Başarısız!</Text>
       <Button title="Tekrar Dene" onPress={handleRetry} />
       <Button title="Ana Menüye Dön" onPress={handleGoBack} />
     </View>

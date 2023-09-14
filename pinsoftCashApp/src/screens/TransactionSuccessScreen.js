@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const TransactionSuccessScreen = () => {
+  const navigation = useNavigation();
   const [transactionData, setTransactionData] = useState({
     receivedAmount: 0,
     senderName: '',
     currentBalance: 0,
   });
 
-  
   const fetchTransactionData = async () => {
     try {
-      // Verileri API'den çekmek için işlem
+      // Verileri API'den çekmek için uygun bir işlem yapılacak
       
       const data = {
         receivedAmount: 500.0,
@@ -30,6 +31,10 @@ const TransactionSuccessScreen = () => {
     fetchTransactionData();
   }, []);
 
+  const handleReturnToMainMenu = () => {
+    navigation.navigate('HomePage');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>İşlem Başarılı</Text>
@@ -44,7 +49,7 @@ const TransactionSuccessScreen = () => {
           Güncel Bakiye: ${transactionData.currentBalance.toFixed(2)}
         </Text>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleReturnToMainMenu}>
         <Text style={styles.buttonText}>Ana Menüye Dön</Text>
       </TouchableOpacity>
     </View>
@@ -52,7 +57,43 @@ const TransactionSuccessScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  // Stil tanımlamaları 
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  successText: {
+    fontSize: 18,
+    marginVertical: 10,
+    textAlign: 'center',
+  },
+  icon: {
+    fontSize: 48,
+    marginVertical: 10,
+  },
+  transactionDetails: {
+    marginTop: 20,
+  },
+  detailText: {
+    fontSize: 16,
+    marginVertical: 5,
+  },
+  button: {
+    backgroundColor: '#00ff00',
+    padding: 10,
+    borderRadius: 5,
+    marginVertical: 10,
+    width: 200,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+  },
 });
 
 export default TransactionSuccessScreen;

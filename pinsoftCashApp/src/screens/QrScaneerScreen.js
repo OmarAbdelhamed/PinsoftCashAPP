@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { RNCamera } from "react-native-camera";
+import { View, Text, StyleSheet, Alert } from "react-native";
+import { BarCodeScanner } from "expo-barcode-scanner";
 import { useNavigation } from "@react-navigation/native";
+
 const QRScannerScreen = () => {
   const navigation = useNavigation();
   const [scanned, setScanned] = useState(false);
 
   const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
-    alert(`QR Kod Okundu: ${data}`);
+    Alert.alert(`QR Kod Okundu: ${data}`);
     if (data === "başarılı_kod") {
       navigation.navigate("TransactionSuccessScreen");
     } else {
@@ -18,19 +19,17 @@ const QRScannerScreen = () => {
 
   useEffect(() => {
     if (scanned) {
-      // QR kod okunduğunda yapılacak işlemleri burada gerçekleştireceğiz
+      
     }
   }, [scanned]);
 
   return (
     <View style={styles.container}>
-      <RNCamera
-        style={styles.camera}
-        onBarCodeRead={handleBarCodeScanned}
-        captureAudio={false}
-      >
-        <Text style={styles.description}>QR Kodu Tara</Text>
-      </RNCamera>
+      <BarCodeScanner
+        style={StyleSheet.absoluteFillObject}
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+      />
+      <Text style={styles.description}>QR Kodu Tara</Text>
     </View>
   );
 };
@@ -40,10 +39,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  camera: {
-    flex: 1,
-    width: "100%",
   },
   description: {
     fontSize: 18,
