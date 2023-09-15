@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   token: '',
+  userId: '',
+  targetId: '',
   user: '',
   balance: 0,
   balanceToBeSent: null,
@@ -17,6 +19,12 @@ export const cashSlice = createSlice({
     setToken: (state, action) => {
       state.token = action.payload;
     },
+    setUserId: (state, action) => {
+      state.userId = action.payload;
+    },
+    setTargetId: (state, action) => {
+      state.targetId = action.payload;
+    },
     setBalance: (state, action) => {
       state.balance = action.payload;
     },
@@ -27,7 +35,13 @@ export const cashSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, setToken, setBalance, setbalanceToBeSent } =
-  cashSlice.actions;
+export const {
+  setTargetId,
+  setUserId,
+  setUser,
+  setToken,
+  setBalance,
+  setbalanceToBeSent,
+} = cashSlice.actions;
 
 export default cashSlice.reducer;

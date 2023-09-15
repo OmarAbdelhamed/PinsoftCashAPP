@@ -1,14 +1,45 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import api from '../../api';
+import { useSelector, useDispatch } from 'react-redux';
+import { createAxiosInterceptor } from '../../intercepter';
 
 const FriendsScreen = () => {
+  const token = useSelector((state) => state.cash.token);
+  createAxiosInterceptor(api, token);
   const [friends, setFriends] = useState([
     { id: 1, fullName: 'Arkadaş 1' },
     { id: 2, fullName: 'Arkadaş 2' },
     { id: 3, fullName: 'Arkadaş 3' },
   ]);
 
+  useEffect(() => {
+    api
+      .get('/users/my-friends')
+
+      .then(
+        (response) => {
+          const transformedData = response.data.map((user) => ({
+            fullName: `${user.firstName} ${user.lastName}`,
+            id: user.id,
+          }));
+          setFriends(transformedData);
+          console.log('friends retreved');
+        },
+
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, []);
   const navigation = useNavigation();
 
   // Arkadaş ekle sayfasına yönlendirme işlevi
@@ -28,7 +59,11 @@ const FriendsScreen = () => {
           </View>
         )}
       />
-      <Button style={styles.button} title="Arkadaş Ekle" onPress={navigateToAddFriend} />
+      <Button
+        style={styles.button}
+        title='Arkadaş Ekle'
+        onPress={navigateToAddFriend}
+      />
     </View>
   );
 };

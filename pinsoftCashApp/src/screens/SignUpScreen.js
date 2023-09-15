@@ -25,7 +25,7 @@ const SignUpScreen = () => {
           console.log(response);
           if (response.status === 200) {
             alert('Üyelik başarıyla oluşturuldu!');
-            navigation.navigate('loginScreen');
+            navigation.navigate('LoginScreen');
           }
         },
         (error) => {

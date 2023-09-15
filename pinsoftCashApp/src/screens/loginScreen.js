@@ -34,7 +34,6 @@ const LoginScreen = () => {
   // };
 
   const handleLogin = () => {
-    navigation.navigate('HomePage');
     axios
       .post('https://mobil-bank-production.up.railway.app/auth/login', {
         email: username,

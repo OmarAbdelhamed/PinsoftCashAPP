@@ -17,12 +17,7 @@ const QRScannerScreen = () => {
     }
   };
 
-  useEffect(() => {
-    if (scanned) {
-      
-    }
-  }, [scanned]);
-
+  
   return (
     <View style={styles.container}>
       <BarCodeScanner

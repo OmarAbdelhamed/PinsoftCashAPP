@@ -15,7 +15,9 @@ import {
 } from 'react-native';
 import SendMoneyScreen from '../screens/SendMoneyScreen';
 import LoginScreen from '../screens/LoginScreen';
-
+import AddFriendScreen from '../screens/AddFriendScreen';
+import ErrorScreen from '../screens/ErrorScreen';
+import QRScannerScreen from '../screens/QrScaneerScreen';
 
 const Stacks = () => {
   const Stack = createNativeStackNavigator();
@@ -38,6 +40,17 @@ const Stacks = () => {
       <Stack.Screen
         name='FriendsScreen'
         component={FriendsScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name='AddFriendScreen'
+        component={AddFriendScreen}
+        options={{}}
+      />
+      <Stack.Screen name='ErrorScreen' component={ErrorScreen} options={{}} />
+      <Stack.Screen
+        name='QRScannerScreen'
+        component={QRScannerScreen}
         options={{}}
       />
       {/* <Stack.Screen

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,19 +10,26 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
+import api from '../../api';
+import { useSelector, useDispatch } from 'react-redux';
+import { createAxiosInterceptor } from '../../intercepter';
+import { setUserId, setTargetId } from '../app/cashSlice';
 
 const HomePage = () => {
   const [balance, setBalance] = useState(1000.0);
+  const [userId, setId] = useState('');
   const [transactions, setTransactions] = useState([]);
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
-  const [selectedFriend, setSelectedFriend] = useState(null);
+  const [FriendList, setFriendList] = useState();
   const [transactionType, setTransactionType] = useState('send');
   const [showTransactionHistory, setShowTransactionHistory] = useState(false);
   const [showFriendPicker, setShowFriendPicker] = useState(false);
   const [showLastTransactions, setShowLastTransactions] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [selectedFriend, setSelectedFriend] = useState();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const handleSendMoney = () => {
     navigation.navigate('SendMoneyScreen');
     if (recipient && amount > 0 && balance >= amount) {
@@ -40,6 +47,50 @@ const HomePage = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(setTargetId(selectedFriend));
+  }, [selectedFriend]);
+  const token = useSelector((state) => state.cash.token);
+  createAxiosInterceptor(api, token);
+  useEffect(() => {
+    api
+      .get('/users')
+
+      .then(
+        (response) => {
+          console.log(response.data);
+          dispatch(setUserId(response.data.id));
+          setId(response.data.id);
+          setBalance(response.data.amount);
+        },
+
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, []);
+
+  useEffect(() => {
+    api
+      .get('/users/my-friends')
+
+      .then(
+        (response) => {
+          const transformedData = response.data.map((user) => ({
+            name: user.firstName,
+            surname: user.lastName,
+            id: user.id,
+          }));
+          setFriendList(transformedData);
+          console.log('friends retreved');
+        },
+
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, []);
+
   const handleReceiveMoney = () => {
     navigation.navigate('QRScannerScreen');
     if (amount > 0) {
@@ -56,11 +107,6 @@ const HomePage = () => {
       setAmount('');
     }
   };
-  const friends = [
-    { id: 1, name: 'Arkadaş 1', surname: 'Soyadı 1' },
-    { id: 2, name: 'Arkadaş 2', surname: 'Soyadı 2' },
-    { id: 3, name: 'Arkadaş 3', surname: 'Soyadı 3' },
-  ];
 
   const getLastTransaction = () => {
     if (transactionType === 'send') {
@@ -77,7 +123,7 @@ const HomePage = () => {
   };
 
   const getLastFiveFriends = () => {
-    const friendsWithLastTransaction = friends.map((friend) => {
+    const friendsWithLastTransaction = FriendList.map((friend) => {
       const lastTransaction = transactions.find(
         (transaction) => transaction.recipient === friend.name
       );
@@ -103,11 +149,30 @@ const HomePage = () => {
         <Text style={styles.balanceText}>{balance.toFixed(2)} TL</Text>
       </View>
 
+      <TouchableOpacity onPress={() => setShowFriendPicker(!showFriendPicker)}>
+        <Text style={[styles.buttonText, styles.spacing]}>
+          Para göndermek için Arkadaş seç:
+        </Text>
+      </TouchableOpacity>
+
+      {showFriendPicker && (
+        <FlatList
+          data={FriendList}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => setSelectedFriend(item.id)}>
+              <Text style={[styles.buttonText]}>
+                {item.name} {item.surname}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+      )}
       <TouchableOpacity
         onPress={() => setShowLastTransactions(!showLastTransactions)}
       >
         <Text style={[styles.buttonText, styles.spacing]}>
-          En Son İşlem Yapan Arkadaşlar:
+          en son işlem yapan Arkadaşlarım:
         </Text>
       </TouchableOpacity>
 
@@ -116,9 +181,7 @@ const HomePage = () => {
           data={getLastFiveFriends()}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => setSelectedTransaction(item.lastTransaction)}
-            >
+            <TouchableOpacity>
               <Text style={[styles.buttonText]}>
                 {item.name} {item.surname}
               </Text>
@@ -127,9 +190,13 @@ const HomePage = () => {
         />
       )}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.sendButton} onPress={handleSendMoney}>
-          <Text style={styles.buttonText}>Gönder</Text>
-        </TouchableOpacity>
+        {selectedFriend ? (
+          <TouchableOpacity style={styles.sendButton} onPress={handleSendMoney}>
+            <Text style={styles.buttonText}>Gönder</Text>
+          </TouchableOpacity>
+        ) : (
+          ''
+        )}
         <TouchableOpacity
           style={styles.receiveButton}
           onPress={handleReceiveMoney}
@@ -138,17 +205,10 @@ const HomePage = () => {
         </TouchableOpacity>
       </View>
 
-      {/* {selectedTransaction && (
-        <View>
-          <Text style={[styles.buttonText, styles.spacing]}>Seçilen İşlem Detayları:</Text>
-          <Text style={[styles.buttonText]}>Tür: {selectedTransaction.type}</Text>
-          <Text style={[styles.buttonText]}>Miktar: {selectedTransaction.amount.toFixed(2)} TL</Text>
-          <Text style={[styles.buttonText]}>Tarih: {new Date(selectedTransaction.timestamp).toLocaleString()}</Text>
-        </View>
-      )} */}
-
       <TouchableOpacity
-        onPress={() => setShowTransactionHistory(!showTransactionHistory)}
+        onPress={() => {
+          setShowTransactionHistory(!showTransactionHistory);
+        }}
       >
         <Text style={[styles.buttonText]}>En Son İşlemler:</Text>
       </TouchableOpacity>
@@ -170,6 +230,21 @@ const HomePage = () => {
           )}
         />
       )}
+      <TouchableOpacity
+        onPress={() => navigation.navigate('TransactionsScreen')}
+      >
+        <Text style={[styles.buttonText]}>Tum işlemler</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('FriendsScreen')}>
+        <Text style={[styles.buttonText]}>Tum arkadaslar</Text>
+      </TouchableOpacity>
+      {/* <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('AddFriendScreen');
+        }}
+      >
+        <Text style={[styles.buttonText]}>Add a friend</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };
