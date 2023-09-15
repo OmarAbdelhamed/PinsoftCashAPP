@@ -42,6 +42,7 @@ const SendMoneyScreen = ({ navigation }) => {
           console.log(error);
         }
       );
+
     setQRData(sentBalance);
   };
 

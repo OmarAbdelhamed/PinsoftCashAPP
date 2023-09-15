@@ -18,6 +18,8 @@ import LoginScreen from '../screens/LoginScreen';
 import AddFriendScreen from '../screens/AddFriendScreen';
 import ErrorScreen from '../screens/ErrorScreen';
 import QRScannerScreen from '../screens/QrScaneerScreen';
+import FriendSelectScreen from '../screens/FriendSelectScreen';
+
 
 const Stacks = () => {
   const Stack = createNativeStackNavigator();
@@ -40,6 +42,11 @@ const Stacks = () => {
       <Stack.Screen
         name='FriendsScreen'
         component={FriendsScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name='FriendSelectScreen'
+        component={FriendSelectScreen}
         options={{}}
       />
       <Stack.Screen

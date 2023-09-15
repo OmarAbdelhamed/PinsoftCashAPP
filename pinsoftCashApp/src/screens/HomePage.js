@@ -24,14 +24,15 @@ const HomePage = () => {
   const [FriendList, setFriendList] = useState();
   const [transactionType, setTransactionType] = useState('send');
   const [showTransactionHistory, setShowTransactionHistory] = useState(false);
-  const [showFriendPicker, setShowFriendPicker] = useState(false);
+  const [sendTransactions, setSendTransactions] = useState([]);
+  const [ReceiveTransactions, setReceiveTransactions] = useState([]);
   const [showLastTransactions, setShowLastTransactions] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const handleSendMoney = () => {
-    navigation.navigate('SendMoneyScreen');
+    navigation.navigate('FriendSelectScreen');
     if (recipient && amount > 0 && balance >= amount) {
       setBalance(balance - parseFloat(amount));
 
@@ -47,9 +48,6 @@ const HomePage = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(setTargetId(selectedFriend));
-  }, [selectedFriend]);
   const token = useSelector((state) => state.cash.token);
   createAxiosInterceptor(api, token);
   useEffect(() => {
@@ -90,6 +88,43 @@ const HomePage = () => {
         }
       );
   }, []);
+
+  useEffect(() => {
+    api
+      .get('/transfers/my-transfers')
+
+      .then(
+        (response) => {
+          console.log(response.data);
+          const transformedDataSend = response.data.sendMoneyTransfer.map(
+            (data) => ({
+              id: data.id,
+              sender: data.targetUser.firstName,
+              amount: data.amount,
+              timestamp: data.createdDate,
+              type: data.transferStatus,
+            })
+          );
+          const transformedDataRecieve = response.data.takeMoneyTransfer.map(
+            (data) => ({
+              id: data.id,
+              sender: data.targetUser.firstName,
+              amount: data.amount,
+              timestamp: data.createdDate,
+              type: data.transferStatus,
+            })
+          );
+          setSendTransactions(transformedDataSend);
+          setReceiveTransactions(transformedDataRecieve);
+          setTransactions([...sendTransactions, ...ReceiveTransactions]);
+        },
+
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, []);
+
 
   const handleReceiveMoney = () => {
     navigation.navigate('QRScannerScreen');
@@ -149,25 +184,6 @@ const HomePage = () => {
         <Text style={styles.balanceText}>{balance.toFixed(2)} TL</Text>
       </View>
 
-      <TouchableOpacity onPress={() => setShowFriendPicker(!showFriendPicker)}>
-        <Text style={[styles.buttonText, styles.spacing]}>
-          Para göndermek için Arkadaş seç:
-        </Text>
-      </TouchableOpacity>
-
-      {showFriendPicker && (
-        <FlatList
-          data={FriendList}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => setSelectedFriend(item.id)}>
-              <Text style={[styles.buttonText]}>
-                {item.name} {item.surname}
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
-      )}
       <TouchableOpacity
         onPress={() => setShowLastTransactions(!showLastTransactions)}
       >
@@ -190,13 +206,10 @@ const HomePage = () => {
         />
       )}
       <View style={styles.buttonContainer}>
-        {selectedFriend ? (
-          <TouchableOpacity style={styles.sendButton} onPress={handleSendMoney}>
-            <Text style={styles.buttonText}>Gönder</Text>
-          </TouchableOpacity>
-        ) : (
-          ''
-        )}
+        <TouchableOpacity style={styles.sendButton} onPress={handleSendMoney}>
+          <Text style={styles.buttonText}>Gönder</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.receiveButton}
           onPress={handleReceiveMoney}
@@ -215,7 +228,7 @@ const HomePage = () => {
 
       {showTransactionHistory && (
         <FlatList
-          data={getLastFiveFriends()}
+          data={getLastFiveTransactions()}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
