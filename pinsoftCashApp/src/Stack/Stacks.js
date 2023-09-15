@@ -19,7 +19,8 @@ import AddFriendScreen from '../screens/AddFriendScreen';
 import ErrorScreen from '../screens/ErrorScreen';
 import QRScannerScreen from '../screens/QrScaneerScreen';
 import FriendSelectScreen from '../screens/FriendSelectScreen';
-
+import TransactionFailureScreen from '../screens/TransactionFailureScreen';
+import TransactionSuccessScreen from '../screens/TransactionSuccessScreen';
 
 const Stacks = () => {
   const Stack = createNativeStackNavigator();
@@ -36,6 +37,16 @@ const Stacks = () => {
       <Stack.Screen
         name='TransactionsScreen'
         component={TransactionsScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name='TransactionSuccessScreen'
+        component={TransactionSuccessScreen}
+        options={{}}
+      />
+      <Stack.Screen
+        name='TransactionFailureScreen'
+        component={TransactionFailureScreen}
         options={{}}
       />
       <Stack.Screen name='SendMoneyScreen' component={SendMoneyScreen} />

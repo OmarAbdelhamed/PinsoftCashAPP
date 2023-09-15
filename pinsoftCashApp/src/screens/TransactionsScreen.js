@@ -5,53 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createAxiosInterceptor } from '../../intercepter';
 
 const TransactionsScreen = () => {
-  const [sendTransactions, setSendTransactions] = useState([
-    {
-      id: 1,
-      name: 'Mahir U',
-      amount: -50.0,
-      date: '2023-09-10',
-      type: 'Para Gönderildi',
-    },
-    {
-      id: 2,
-      name: 'Yusuf',
-      amount: 2000.0,
-      date: '2023-09-09',
-      type: 'Para Alındı',
-    },
-    {
-      id: 3,
-      name: 'Ebrar',
-      amount: -150.0,
-      date: '2023-09-08',
-      type: 'Para Gönderildi',
-    },
-  ]);
+  const [sendTransactions, setSendTransactions] = useState([]);
 
-  const [ReceiveTransactions, setReceiveTransactions] = useState([
-    {
-      id: 1,
-      name: 'Mahir U',
-      amount: -50.0,
-      date: '2023-09-10',
-      type: 'Para Gönderildi',
-    },
-    {
-      id: 2,
-      name: 'Yusuf',
-      amount: 2000.0,
-      date: '2023-09-09',
-      type: 'Para Alındı',
-    },
-    {
-      id: 3,
-      name: 'Ebrar',
-      amount: -150.0,
-      date: '2023-09-08',
-      type: 'Para Gönderildi',
-    },
-  ]);
+  const [ReceiveTransactions, setReceiveTransactions] = useState([]);
   const token = useSelector((state) => state.cash.token);
   createAxiosInterceptor(api, token);
 
@@ -65,7 +21,7 @@ const TransactionsScreen = () => {
           const transformedDataSend = response.data.sendMoneyTransfer.map(
             (data) => ({
               id: data.id,
-              name: data.targetUser.firstName,
+              name: `${data.targetUser.firstName} ${data.targetUser.lastName}`,
               amount: data.amount,
               date: data.createdDate,
               type: data.transferStatus,
@@ -74,7 +30,7 @@ const TransactionsScreen = () => {
           const transformedDataRecieve = response.data.takeMoneyTransfer.map(
             (data) => ({
               id: data.id,
-              name: data.targetUser.firstName,
+              name: `${data.targetUser.firstName} ${data.targetUser.lastName}`,
               amount: data.amount,
               date: data.createdDate,
               type: data.transferStatus,
@@ -129,10 +85,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    textAlign:'center',
+    textAlign: 'center',
   },
   header2: {
-    textAlign:'center',
+    textAlign: 'center',
     fontSize: 19,
     fontWeight: 'bold',
     marginBottom: 16,

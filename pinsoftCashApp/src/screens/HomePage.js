@@ -32,7 +32,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
 
   const handleSendMoney = () => {
-    navigation.navigate('FriendSelectScreen');
+    navigation.navigate('FriendSelectScreen', { setBalance: 'setBalance' });
     if (recipient && amount > 0 && balance >= amount) {
       setBalance(balance - parseFloat(amount));
 
@@ -66,7 +66,7 @@ const HomePage = () => {
           console.log(error);
         }
       );
-  }, []);
+  },[]);
 
   useEffect(() => {
     api
@@ -124,7 +124,6 @@ const HomePage = () => {
         }
       );
   }, []);
-
 
   const handleReceiveMoney = () => {
     navigation.navigate('QRScannerScreen');
@@ -218,7 +217,7 @@ const HomePage = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
           setShowTransactionHistory(!showTransactionHistory);
         }}
@@ -242,7 +241,7 @@ const HomePage = () => {
             </TouchableOpacity>
           )}
         />
-      )}
+      )} */}
       <TouchableOpacity
         onPress={() => navigation.navigate('TransactionsScreen')}
       >

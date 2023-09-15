@@ -23,6 +23,7 @@ const AddFriendScreen = () => {
       .then(
         (response) => {
           console.log(response.data);
+          alert('friend Added');
         },
 
         (error) => {
@@ -68,11 +69,11 @@ const styles = StyleSheet.create({
   inputID: {
     width: 300,
     height: 40,
-    textAlign:'center',
+    textAlign: 'center',
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 10,
-    paddingTop:10,
+    paddingTop: 10,
   },
   button: {
     marginTop: 1,
@@ -89,8 +90,8 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'left',
     fontSize: 20,
-    margin:10,
-    marginTop:30,
+    margin: 10,
+    marginTop: 30,
   },
 });
 

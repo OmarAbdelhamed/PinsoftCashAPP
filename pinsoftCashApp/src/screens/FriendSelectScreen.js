@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api';
 import { createAxiosInterceptor } from '../../intercepter';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { setTargetId } from '../app/cashSlice';
 import {
   FlatList,
@@ -47,29 +47,30 @@ const FriendSelectScreen = () => {
       );
   }, []);
 
+  
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => setShowFriendPicker(!showFriendPicker)}>
         <Text style={styles.buttonText}>Para göndermek için Arkadaş seç</Text>
       </TouchableOpacity>
 
-        <FlatList
-          data={FriendList}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                setSelectedFriend(item.id);
-                navigation.navigate('SendMoneyScreen');
-              }}
-              style={styles.button}
-            >
-              <Text style={[styles.Text]}>
-                {item.name} {item.surname}
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
+      <FlatList
+        data={FriendList}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedFriend(item.id);
+              navigation.navigate('SendMoneyScreen');
+            }}
+            style={styles.button}
+          >
+            <Text style={[styles.Text]}>
+              {item.name} {item.surname}
+            </Text>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 };

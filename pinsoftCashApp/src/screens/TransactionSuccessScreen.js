@@ -1,34 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import api from '../../api';
+import { useSelector } from 'react-redux';
+import { createAxiosInterceptor } from '../../intercepter';
 
 const TransactionSuccessScreen = () => {
+  const token = useSelector((state) => state.cash.token);
+  createAxiosInterceptor(api, token);
   const navigation = useNavigation();
   const [transactionData, setTransactionData] = useState({
     receivedAmount: 0,
     senderName: '',
     currentBalance: 0,
   });
-
-  const fetchTransactionData = async () => {
-    try {
-      // Verileri API'den çekmek için uygun bir işlem yapılacak
-      
-      const data = {
-        receivedAmount: 500.0,
-        senderName: 'John Doe',
-        currentBalance: 1200.0,
-      };
-
-      setTransactionData(data);
-    } catch (error) {
-      console.error('Veri çekme hatası:', error);
-    }
-  };
+  const route = useRoute();
 
   useEffect(() => {
-    // Sayfa yüklendiğinde verileri çek
-    fetchTransactionData();
+    api
+      .get(`/users/${route.params.senderUserId}`)
+
+      .then(
+        (response) => {
+          console.log(response.data);
+          const transformedData = response.data.map((user) => ({
+            receivedAmount: route.params.amount,
+            senderName: user.firstName,
+            id: user.id,
+          }));
+          setFriendList(transformedData);
+        },
+
+        (error) => {
+          console.log(error);
+        }
+      );
+    
   }, []);
 
   const handleReturnToMainMenu = () => {
@@ -42,11 +49,10 @@ const TransactionSuccessScreen = () => {
       <Text style={styles.icon}>✅</Text>
       <View style={styles.transactionDetails}>
         <Text style={styles.detailText}>
-          Hesaba Gelen Para: ${transactionData.receivedAmount.toFixed(2)}
+          Hesaba Gelen Para: {transactionData.receivedAmount.toFixed(2)}
         </Text>
-        <Text style={styles.detailText}>Gönderen: {transactionData.senderName}</Text>
         <Text style={styles.detailText}>
-          Güncel Bakiye: ${transactionData.currentBalance.toFixed(2)}
+          Gönderen: {transactionData.senderName}
         </Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={handleReturnToMainMenu}>

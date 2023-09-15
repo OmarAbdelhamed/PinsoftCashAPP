@@ -15,11 +15,7 @@ import { createAxiosInterceptor } from '../../intercepter';
 const FriendsScreen = () => {
   const token = useSelector((state) => state.cash.token);
   createAxiosInterceptor(api, token);
-  const [friends, setFriends] = useState([
-    { id: 1, fullName: 'Arkadaş 1' },
-    { id: 2, fullName: 'Arkadaş 2' },
-    { id: 3, fullName: 'Arkadaş 3' },
-  ]);
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     api

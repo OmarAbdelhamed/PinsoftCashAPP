@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image } from 'react-native';
 import ErrorScreen from './ErrorScreen';
 import api from '../../api';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { createAxiosInterceptor } from '../../intercepter';
-
-import QRCode from 'react-native-qrcode-svg';
+import { useRoute } from '@react-navigation/native';
+import { encode } from 'base-64'; // Import the 'encode' function
 
 const SendMoneyScreen = ({ navigation }) => {
   const [sentBalance, setSentBalance] = useState('');
-  const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(true); // İşlem başarısız olduğunda false olarak ayarlayın
-  const [qrData, setQRData] = useState(''); // QR kodunun içeriğini tutmak için bir state ekleyin
+  const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(true);
+  const [qrCodeImage, setQRCodeImage] = useState(null); // To store the QR code image as base64 data URI
 
   const token = useSelector((state) => state.cash.token);
   const userId = useSelector((state) => state.cash.userId);
@@ -23,28 +23,39 @@ const SendMoneyScreen = ({ navigation }) => {
   };
 
   const handleQRCreate = () => {
-    api
-      .get('/transfers', {
-        amount: sentBalance,
-        senderUserId: userId,
-        targetUserId: targetId,
-      })
+    if (sentBalance.trim() === '') {
+      alert('Enter the amount');
+      return;
+    }
 
-      .then(
-        (response) => {
-          console.log(response);
-          if (response) {
-            console.log('sent successfully');
-          }
-        },
+    const requestData = {
+      amount: parseFloat(sentBalance),
+      senderUserId: userId,
+      targetUserId: targetId,
+    };
 
-        (error) => {
-          console.log(error);
+    api.post('/transfers', requestData, { responseType: 'arraybuffer' }).then(
+      async (response) => {
+        console.log(response.data);
+        if (response) {
+          console.log('success');
+          
+          const arrayBuffer = response.data;
+          const uint8Array = new Uint8Array(arrayBuffer);
+
+          const base64Data = encode(String.fromCharCode.apply(null, uint8Array));
+          const dataURI = `data:image/png;base64,${base64Data}`;
+
+          setQRCodeImage(dataURI);
         }
-      );
-
-    setQRData(sentBalance);
+      },
+      (error) => {
+        alert(`${error.response.data}`);
+        console.log(error.response.data);
+      }
+    );
   };
+
 
   return (
     <View style={styles.container}>
@@ -56,16 +67,12 @@ const SendMoneyScreen = ({ navigation }) => {
         value={sentBalance}
         onChangeText={(enteredValue) => setSentBalance(enteredValue)}
       />
-      <Button title='Gönder' onPress={handleSubmit} />
 
       <Button title='QR Oluştur' onPress={handleQRCreate} />
 
-      {/* QR kodunu sadece bir şartla görüntüleyin */}
-      {qrData ? (
-        <QRCode
-          value={qrData} // QR kodunun içeriği
-          size={200}
-        />
+      {qrCodeImage ? (
+        // Display the received QR code image as a base64 data URI
+        <Image source={{ uri: qrCodeImage }} style={styles.qrCodeImage} />
       ) : null}
 
       {isTransactionSuccessful === false && (
@@ -92,6 +99,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
+  },
+  qrCodeImage: {
+    width: 200,
+    height: 200,
   },
 });
 
